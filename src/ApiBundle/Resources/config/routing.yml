@@ -1,0 +1,9 @@
+api_calculate_price:
+  path: /calculate-price
+  methods: [POST]
+  controller: 'App\ApiBundle\Controller\PaymentController::calculatePrice'
+
+api_purchase:
+  path: /purchase
+  methods: [POST]
+  controller: 'App\ApiBundle\Controller\PaymentController::purchase'
