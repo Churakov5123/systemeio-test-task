@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\ApiBundle\Entity;
 
+/**
+ * @ORM\Table(name="tax")
+ * @ORM\Entity(repositoryClass="App\ApiBundle\Repository\TaxRepository")
+ */
 class Tax
 {
     /**
@@ -26,7 +30,7 @@ class Tax
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="created_date", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
     private \DateTime $createdAt;
 
@@ -71,5 +75,4 @@ class Tax
     {
         $this->percent = $percent;
     }
-
 }

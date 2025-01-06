@@ -40,7 +40,7 @@ class Coupon
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="created_date", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
     private \DateTime $createdAt;
 

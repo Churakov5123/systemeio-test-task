@@ -37,7 +37,7 @@ class Product
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="created_date", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
     private \DateTime $createdAt;
 
@@ -47,13 +47,11 @@ class Product
      */
     private \DateTime $updatedAt;
 
-
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
-
 
     public function getId(): ?int
     {
@@ -68,7 +66,7 @@ class Product
         $this->id = $id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

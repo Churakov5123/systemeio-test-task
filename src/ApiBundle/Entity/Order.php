@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\ApiBundle\Entity;
 
+/**
+ * @ORM\Table(name="order")
+ *
+ * @ORM\Entity(repositoryClass="App\ApiBundle\Repository\OrderRepository")
+ */
 class Order
 {
     /**
@@ -22,7 +27,7 @@ class Order
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="created_date", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
     private \DateTime $createdAt;
 }
