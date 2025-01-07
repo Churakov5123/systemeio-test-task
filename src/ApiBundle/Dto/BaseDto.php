@@ -6,7 +6,7 @@ namespace App\ApiBundle\Dto;
 
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class BaseRequestDto
+abstract class BaseDto
 {
     /**
      * @throws \Exception

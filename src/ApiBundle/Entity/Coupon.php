@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\ApiBundle\Entity;
 
+use App\ApiBundle\Enum\CouponType;
+
 /**
  * @ORM\Table(name="coupon")
  * @ORM\Entity(repositoryClass="App\ApiBundle\Repository\CouponRepository")
@@ -19,7 +21,7 @@ class Coupon
     private int $id;
 
     /**
-     *  Енум нужно подключить!
+     * @see CouponType
      *
      * @var string
      *
@@ -33,10 +35,10 @@ class Coupon
     private string $code;
 
     /**
-     * @var float|null
+     * @var float
      * @ORM\Column(name="discount_amount", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private ?float $discountAmount = null;
+    private float $discountAmount;
 
     /**
      * @var \DateTime
@@ -66,14 +68,14 @@ class Coupon
         $this->id = $id;
     }
 
-    public function getType(): string
+    public function getType(): CouponType
     {
-        return $this->type;
+        return CouponType::from($this->type);
     }
 
-    public function setType(string $type): void
+    public function setType(CouponType $type): void
     {
-        $this->type = $type;
+        $this->type = $type->value;
     }
 
     public function getCode(): string
@@ -86,12 +88,12 @@ class Coupon
         $this->code = $code;
     }
 
-    public function getDiscountAmount(): ?float
+    public function getDiscountAmount(): float
     {
         return $this->discountAmount;
     }
 
-    public function setDiscountAmount(?float $discountAmount): void
+    public function setDiscountAmount(float $discountAmount): void
     {
         $this->discountAmount = $discountAmount;
     }

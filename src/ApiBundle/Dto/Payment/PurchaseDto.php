@@ -3,9 +3,21 @@ declare(strict_types=1);
 
 namespace App\ApiBundle\Dto\Payment;
 
-use App\ApiBundle\Dto\BaseRequestDto;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class PurchaseDto extends BaseRequestDto
+class PurchaseDto extends CalculatePriceDto
 {
+    #[Assert\NotBlank(message: "Payment processor is required.")]
+    #[Assert\Type(type: "string", message: "Payment processor must be a string.")]
+    protected string $paymentProcessor;
 
+    public function getPaymentProcessor(): string
+    {
+        return $this->paymentProcessor;
+    }
+
+    public function setPaymentProcessor(string $paymentProcessor): void
+    {
+        $this->paymentProcessor = $paymentProcessor;
+    }
 }

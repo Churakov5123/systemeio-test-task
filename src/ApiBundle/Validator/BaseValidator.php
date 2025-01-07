@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ApiBundle\Validator;
 
-use App\ApiBundle\Dto\BaseRequestDto;
+use App\ApiBundle\Dto\BaseDto;
 use Symfony\Component\Validator\Validator\ValidatorInterface as SymfonyValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 class BaseValidator
@@ -17,10 +17,10 @@ class BaseValidator
     }
 
     /**
-     * @param BaseRequestDto $dto
+     * @param BaseDto $dto
      * @return array|null
      */
-    public function validate(BaseRequestDto $dto): ?array
+    public function validate(BaseDto $dto): ?array
     {
         $violations = $this->validator->validate($dto);
 

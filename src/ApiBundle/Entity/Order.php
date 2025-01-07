@@ -26,6 +26,15 @@ class Order
     private ?float $amount = null;
 
     /**
+     * @see PaymentStatus
+     *
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string")
+     */
+    private string $status;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="created_at", type="datetime")
      */

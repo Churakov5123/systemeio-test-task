@@ -30,10 +30,10 @@ class Product
     private string $description;
 
     /**
-     * @var float|null
-     * @ORM\Column(name="amount", type="decimal", precision=10, scale=2, nullable=true)
+     * @var float
+     * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
-    private ?float $amount = null;
+    private float $amount;
 
     /**
      * @var \DateTime
@@ -86,12 +86,12 @@ class Product
         $this->description = $description;
     }
 
-    public function getAmount(): ?float
+    public function getAmount(): float
     {
         return $this->amount;
     }
 
-    public function setAmount(?float $amount): void
+    public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
