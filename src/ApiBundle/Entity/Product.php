@@ -3,48 +3,28 @@
 declare(strict_types=1);
 
 namespace App\ApiBundle\Entity;
-
-/**
- * @ORM\Table(name="product")
- * @ORM\Entity(repositoryClass="App\ApiBundle\Repository\ProductRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\ApiBundle\Repository\ProductRepository')]
+#[ORM\Table(name: 'product')]
 class Product
 {
-    /**
-     * @var int
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private int $id;
 
-    /**
-     * @var string
-     * @ORM\Column(name="name", type="string")
-     */
+    #[ORM\Column(name: 'name', type: 'string')]
     private string $name;
 
-    /**
-     * @ORM\Column(name="description", type="text", length=65535)
-     */
+    #[ORM\Column(name: 'description', type: 'text', length: 65535)]
     private string $description;
 
-    /**
-     * @var float
-     * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
-     */
+    #[ORM\Column(name: 'amount', type: 'decimal', precision: 10, scale: 2)]
     private float $amount;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="created_at", type="datetime")
-     */
+    #[ORM\Column(name: 'created_at', type: 'datetime')]
     private \DateTime $createdAt;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
+    #[ORM\Column(name: 'updated_at', type: 'datetime')]
     private \DateTime $updatedAt;
 
     public function __construct()
@@ -58,10 +38,7 @@ class Product
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -116,4 +93,3 @@ class Product
         $this->updatedAt = $updatedAt;
     }
 }
-

@@ -3,53 +3,31 @@
 declare(strict_types=1);
 
 namespace App\ApiBundle\Entity;
-
+use Doctrine\ORM\Mapping as ORM;
 use App\ApiBundle\Enum\CouponType;
 
-/**
- * @ORM\Table(name="coupon")
- * @ORM\Entity(repositoryClass="App\ApiBundle\Repository\CouponRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\ApiBundle\Repository\CouponRepository')]
+#[ORM\Table(name: 'coupon')]
 class Coupon
 {
-    /**
-     * @var int
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private int $id;
 
-    /**
-     * @see CouponType
-     *
-     * @var string
-     *
-     * @ORM\Column(name="`type`", type="string")
-     */
+    #[ORM\Column(name: '`type`', type: 'string')]
     private string $type;
 
-    /**
-     * @ORM\Column(name="code", type="string", length=10)
-     */
+    #[ORM\Column(name: 'code', type: 'string', length: 10)]
     private string $code;
 
-    /**
-     * @var float
-     * @ORM\Column(name="discount_amount", type="decimal", precision=10, scale=2, nullable=true)
-     */
+    #[ORM\Column(name: 'discount_amount', type: 'decimal', precision: 10, scale: 2, nullable: true)]
     private float $discountAmount;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="created_at", type="datetime")
-     */
+    #[ORM\Column(name: 'created_at', type: 'datetime')]
     private \DateTime $createdAt;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
+    #[ORM\Column(name: 'updated_at', type: 'datetime')]
     private \DateTime $updatedAt;
 
     public function __construct()

@@ -3,41 +3,25 @@
 declare(strict_types=1);
 
 namespace App\ApiBundle\Entity;
-
-/**
- * @ORM\Table(name="tax")
- * @ORM\Entity(repositoryClass="App\ApiBundle\Repository\TaxRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\ApiBundle\Repository\TaxRepository')]
+#[ORM\Table(name: 'tax')]
 class Tax
 {
-    /**
-     * @var int
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(name="country_code", type="string",length=2)
-     */
+    #[ORM\Column(name: 'country_code', type: 'string', length: 2)]
     private string $countryCode;
 
-    /**
-     * @ORM\Column(name="percent", type="integer")
-     */
+    #[ORM\Column(name: 'percent', type: 'integer')]
     private int $percent;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="created_at", type="datetime")
-     */
+    #[ORM\Column(name: 'created_at', type: 'datetime')]
     private \DateTime $createdAt;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
+    #[ORM\Column(name: 'updated_at', type: 'datetime')]
     private \DateTime $updatedAt;
 
     public function __construct()
@@ -71,7 +55,7 @@ class Tax
         return $this->percent;
     }
 
-    public function setPercent(int $percent)
+    public function setPercent(int $percent): void
     {
         $this->percent = $percent;
     }
