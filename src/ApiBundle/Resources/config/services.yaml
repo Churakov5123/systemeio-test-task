@@ -1,0 +1,50 @@
+services:
+  _defaults:
+    public: true
+    autoconfigure: true
+
+ #components
+  App\ApiBundle\Components\PaymentProcessor\PaymentProcessor:
+    arguments:
+      $paymentProviderRegistry: '@App\ApiBundle\Components\PaymentProcessor\PaymentProviderRegistry'
+
+  App\ApiBundle\Components\PaymentProcessor\PaymentProviderRegistry:
+    arguments:
+      $paymentProviders: !tagged_iterator { tag: 'payment_provider' }
+
+  App\ApiBundle\Components\PaymentProcessor\Providers\Paypall:
+    tags:
+      - { name: 'payment_provider', key: 'paypal' }
+
+  App\ApiBundle\Components\PaymentProcessor\Providers\Stripe:
+    tags:
+      - { name: 'payment_provider', key: 'stripe' }
+
+
+  #Controller
+  App\ApiBundle\Controller\PaymentController:
+    arguments:
+      $validator: '@App\ApiBundle\Validator\BaseValidator'
+      $priceService: '@App\ApiBundle\Service\Payment\PriceService'
+      $paymentService: '@App\ApiBundle\Service\Payment\PaymentService'
+
+  #Service
+    #Payment
+  App\ApiBundle\Service\Payment\PriceService:
+    public: true
+    autowire: true
+    arguments:
+      $couponRepository: '@App\ApiBundle\Repository\CouponRepository'
+      $productRepository: '@App\ApiBundle\Repository\ProductRepository'
+      $taxRepository: '@App\ApiBundle\Repository\TaxRepository'
+
+  App\ApiBundle\Service\Payment\PaymentService:
+    public: true
+    autowire: true
+    arguments:
+      $priceService: '@App\ApiBundle\Service\Payment\PriceService'
+      $paymentProcessor: '@App\ApiBundle\Components\PaymentProcessor\PaymentProcessor'
+      $orderRepository: '@App\ApiBundle\Repository\OrderRepository'
+
+
+  App\ApiBundle\Validator\BaseValidator: ~

@@ -6,6 +6,7 @@ namespace App\ApiBundle\Service\Payment;
 
 use App\ApiBundle\Components\PaymentProcessor\PaymentProcessor;
 use App\ApiBundle\Dto\Payment\PurchaseDto;
+use App\ApiBundle\Entity\Order;
 use App\ApiBundle\Enum\PaymentStatus;
 use App\ApiBundle\Repository\OrderRepository;
 
@@ -32,7 +33,12 @@ class PaymentService
         $price = $this->priceService->getPrice($purchaseDto);
 
         //creating an order with status
-        $this->orderRepository->addOrder($price, PaymentStatus::PENDING);
+        $order = new Order();
+        $order->setAmount($price);
+        $order->setStatus(PaymentStatus::PENDING);
+
+        $this->orderRepository->save($order);   // можно отдельно вынести в OrderService - но в рамках данной задачи и ее описания это не целесообразно
+
         //start payment
         $this->paymentProcessor->execute($price, $purchaseDto->getPaymentProcessor());
 

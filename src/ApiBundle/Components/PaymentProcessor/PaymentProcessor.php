@@ -20,7 +20,7 @@ class PaymentProcessor
     public function execute(float $price, string $paymentProcessor): void
     {
         /** @var Pay $provider */
-        $provider = $this->paymentProviderRegistry->getByProcessor($paymentProcessor);
+        $provider = $this->paymentProviderRegistry->getProvider($paymentProcessor);
 
         $provider->pay($price);
 

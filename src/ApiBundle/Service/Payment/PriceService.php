@@ -25,7 +25,7 @@ class PriceService
     public function getPrice(CalculatePriceDto $calculatePriceDto): float
     {
         /** @var Product $product */
-        $product = $this->productRepository->getByProduct($calculatePriceDto->getProduct());
+        $product = $this->productRepository->find($calculatePriceDto->getProduct());
         $productAmount = $product->getAmount();
 
         $discount = $this->getDiscountByType($calculatePriceDto, $productAmount);
@@ -35,7 +35,7 @@ class PriceService
         return $productAmount + ($productAmount / 100 * $taxPercent) - $discount;
     }
 
-    //В этих методах можно использовать отдельные сервисы где будет реализована соответствующая логика
+    //В этих методах можно использовать отдельные сервисы где будет реализована соответствующая логика (вынос логики в сервисы)
     //В рамках проекта это было бы верно, но в рамках одного  тестового задания  углублятся смысла не вижу и опишу логику прям тут
     private function getTax(string $taxNumber): int
     {
@@ -46,12 +46,12 @@ class PriceService
         return $tax->getPercent();
     }
 
-    //В этих методах можно использовать отдельные сервисы где будет реализована соответствующая логика
+    //В этих методах можно использовать отдельные сервисы где будет реализована соответствующая логика (вынос логики в сервисы)
     //В рамках проекта это было бы верно, но в рамках одного  тестового задания  углублятся смысла не вижу и опишу логику прям тут
     private function getDiscountByType(CalculatePriceDto $calculatePriceDto, float $amount): float
     {
         /** @var  Coupon $coupon */
-        $coupon = $this->couponRepository->getByCode($calculatePriceDto->getCouponCode());
+        $coupon = $this->couponRepository->findByCode($calculatePriceDto->getCouponCode());
 
         return match ($coupon->getType()) {
             CouponType::PERCENT => $amount / 100 * $coupon->getDiscountAmount(),

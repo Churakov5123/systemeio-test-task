@@ -6,7 +6,7 @@ namespace App\ApiBundle\Components\PaymentProcessor\Providers;
 
 use Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor;
 
-class Paypall implements Pay
+class Paypall implements Provider,Pay
 {
     public function __construct(private PaypalPaymentProcessor $paymentProcessor)
     {

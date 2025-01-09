@@ -5,7 +5,7 @@ namespace App\ApiBundle\Components\PaymentProcessor\Providers;
 
 use Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor;
 
-class Stripe implements Pay
+class Stripe implements Provider,Pay
 {
     public function __construct(private StripePaymentProcessor $paymentProcessor)
     {

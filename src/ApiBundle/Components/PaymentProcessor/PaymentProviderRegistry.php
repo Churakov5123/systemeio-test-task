@@ -9,5 +9,16 @@ namespace App\ApiBundle\Components\PaymentProcessor;
  */
 class PaymentProviderRegistry
 {
-//
+    public function __construct(  private array $paymentProviders)
+    {
+    }
+    public function getProvider(string $key)
+    {
+        return $this->paymentProviders[$key] ?? null;
+    }
+
+    public function getPaymentProviders(): array
+    {
+        return $this->paymentProviders;
+    }
 }

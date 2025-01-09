@@ -24,4 +24,53 @@ class Order
 
     #[ORM\Column(name: 'created_at', type: 'datetime')]
     private \DateTime $createdAt;
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+
+    public function getAmount(): ?float
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(?float $amount): void
+    {
+        $this->amount = $amount;
+    }
+
+    public function getStatus(): PaymentStatus
+    {
+        return PaymentStatus::from($this->status);
+    }
+
+    public function setStatus(PaymentStatus $status): void
+    {
+        $this->status = $status->value;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
 }

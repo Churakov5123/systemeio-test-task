@@ -11,3 +11,16 @@ services:
             - .:/app:rw
         environment:
             - APP_ENV=dev
+
+    db_postgres:
+        image: postgres:15
+        restart: always
+        env_file: .env
+        environment:
+            POSTGRES_DB: my_database
+            POSTGRES_USER: my_pg_user
+            POSTGRES_PASSWORD: pg_user
+        volumes:
+            - ./docker/postgres/data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
