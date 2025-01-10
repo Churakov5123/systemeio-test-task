@@ -8,6 +8,7 @@ namespace App\ApiBundle\Controller;
 use App\ApiBundle\Dto\Payment\CalculatePriceDto;
 use App\ApiBundle\Dto\Payment\PurchaseDto;
 use App\ApiBundle\Exception\BadRequestException;
+use App\ApiBundle\Exception\EntityNotFoundException;
 use App\ApiBundle\Exception\ValidationException;
 use App\ApiBundle\Service\Payment\PaymentService;
 use App\ApiBundle\Service\Payment\PriceService;
@@ -37,14 +38,14 @@ class PaymentController extends BaseController
             $dto->fillFromRequest($request);
 
             $this->validator->validate($dto);
-            $price = $this->priceService->getPrice($dto);
 
-            return $this->sendJsonResponse(['price' => $price]);
-        } catch (BadRequestException $e) {
-            return $this->sendJsonResponse($e->getData(),
-                $e->getCode()
-            );
-        } catch (ValidationException $e) {
+            $productPrice = $this->priceService->getProductPrice($dto);
+
+            return $this->sendJsonResponse([
+                'price' => $productPrice->getAmount(),
+                'currency' => $productPrice->getCurrency()->getCode()
+            ]);
+        } catch (BadRequestException|ValidationException|EntityNotFoundException $e) {
             return $this->sendJsonResponse($e->getData(),
                 $e->getCode()
             );
@@ -59,17 +60,13 @@ class PaymentController extends BaseController
 
             $this->validator->validate($dto);
 
-            $this->paymentService->execute($dto);
-        } catch (BadRequestException $e) {
-            return $this->sendJsonResponse($e->getData(),
-                $e->getCode()
-            );
-        } catch (ValidationException $e) {
+            $result = $this->paymentService->execute($dto);
+
+            return $this->sendJsonResponse($result, Response::HTTP_CREATED);
+        } catch (BadRequestException|ValidationException|EntityNotFoundException $e) {
             return $this->sendJsonResponse($e->getData(),
                 $e->getCode()
             );
         }
-
-        return $this->sendJsonResponse();
     }
 }

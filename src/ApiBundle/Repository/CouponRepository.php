@@ -20,9 +20,9 @@ class CouponRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('c')
             ->where('c.code = :code')
-            ->setParameters(parameters: [
-                'code' => $code,
-            ])
+            ->setParameter(
+                'code', $code,
+            )
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ApiBundle\Components\PaymentProcessor\Providers;
 
+use Money\Money;
 use Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor;
 
 class Paypall implements Provider,Pay
@@ -12,10 +13,10 @@ class Paypall implements Provider,Pay
     {
     }
 
-    public function pay(float $price): void
+    public function pay(Money $productPrice): void
     {
        // transform logic float to int
 
-        $this->paymentProcessor->pay($price);
+        $this->paymentProcessor->pay(intval($productPrice->getAmount()));
     }
 }

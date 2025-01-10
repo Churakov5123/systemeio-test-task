@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\ApiBundle\Enum\PaymentStatus;
 
 #[ORM\Entity(repositoryClass: 'App\ApiBundle\Repository\OrderRepository')]
-#[ORM\Table(name: 'order')]
+#[ORM\Table(name: '"order"')]
 class Order
 {
     #[ORM\Id]
@@ -21,6 +21,9 @@ class Order
 
     #[ORM\Column(name: 'status', type: 'string')]
     private string $status;
+
+    #[ORM\Column(name: 'payment_processor', type: 'string')]
+    private string $paymentProcessor;
 
     #[ORM\Column(name: 'created_at', type: 'datetime')]
     private \DateTime $createdAt;
@@ -72,5 +75,15 @@ class Order
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    public function getPaymentProcessor(): string
+    {
+        return $this->paymentProcessor;
+    }
+
+    public function setPaymentProcessor(string $paymentProcessor): void
+    {
+        $this->paymentProcessor = $paymentProcessor;
     }
 }

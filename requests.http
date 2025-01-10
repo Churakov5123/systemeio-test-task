@@ -9,6 +9,13 @@ Content-Type: application/json
   "couponCode": "D15"
 }
 
+###
+
+{
+	"price": "98",
+	"currency": "EUR"
+}
+
 ### Execute Purchase
 POST http://127.0.0.1:8337/purchase
 Accept: application/json
@@ -19,4 +26,12 @@ Content-Type: application/json
   "taxNumber": "IT12345678900",
   "couponCode": "D15",
   "paymentProcessor": "paypal"
+}
+
+###
+
+{
+	"orderId": 12,
+	"status": "pending",
+	"payment_processor": "paypal"
 }

@@ -6,7 +6,7 @@ services:
 
   App\ApiBundle\Components\PaymentProcessor\PaymentProviderRegistry:
     arguments:
-      $paymentProviders: !tagged_iterator { tag: 'payment_provider' }
+      $paymentProviders: !tagged_iterator { tag: 'payment_provider', index_by: 'key' }
 
     # Stripe Provider
   App\ApiBundle\Components\PaymentProcessor\Providers\Stripe:

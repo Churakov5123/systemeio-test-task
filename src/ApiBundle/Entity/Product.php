@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 namespace App\ApiBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: 'App\ApiBundle\Repository\ProductRepository')]
 #[ORM\Table(name: 'product')]
 class Product
@@ -20,6 +22,9 @@ class Product
 
     #[ORM\Column(name: 'amount', type: 'decimal', precision: 10, scale: 2)]
     private float $amount;
+
+    #[ORM\Column(name: 'currency', type: 'string', length: 5)]
+    private string $currency;
 
     #[ORM\Column(name: 'created_at', type: 'datetime')]
     private \DateTime $createdAt;
@@ -71,6 +76,16 @@ class Product
     public function setAmount(float $amount): void
     {
         $this->amount = $amount;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
     }
 
     public function getCreatedAt(): \DateTime

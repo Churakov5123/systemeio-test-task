@@ -10,11 +10,12 @@ namespace App\ApiBundle\Components\PaymentProcessor;
 class PaymentProviderRegistry
 {
     public array $paymentProviders;
-    public function __construct( iterable $paymentProviders)
+
+    public function __construct(iterable $paymentProviders)
     {
         $this->paymentProviders = $paymentProviders instanceof \Traversable ? iterator_to_array($paymentProviders) : $paymentProviders;
-
     }
+
     public function getProvider(string $key)
     {
         return $this->paymentProviders[$key] ?? null;

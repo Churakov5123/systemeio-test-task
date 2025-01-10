@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\ApiBundle\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 use App\ApiBundle\Enum\CouponType;
 

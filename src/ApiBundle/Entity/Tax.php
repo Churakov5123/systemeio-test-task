@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 namespace App\ApiBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: 'App\ApiBundle\Repository\TaxRepository')]
 #[ORM\Table(name: 'tax')]
 class Tax

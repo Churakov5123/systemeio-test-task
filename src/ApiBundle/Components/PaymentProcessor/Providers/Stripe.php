@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\ApiBundle\Components\PaymentProcessor\Providers;
 
+use Money\Money;
 use Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor;
 
 class Stripe implements Provider,Pay
@@ -11,9 +12,9 @@ class Stripe implements Provider,Pay
     {
     }
 
-    public function pay(float $price): void
+    public function pay(Money $productPrice): void
     {
-        $result = $this->paymentProcessor->processPayment($price);
+        $result = $this->paymentProcessor->processPayment(floatval($productPrice->getAmount()));
 
         if ($result) {
             //some logic for handle

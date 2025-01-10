@@ -26,21 +26,28 @@ class PaymentService
     /**
      *
      * @param PurchaseDto $purchaseDto
-     * @return void
+     * @return array
      */
-    public function execute(PurchaseDto $purchaseDto): void
+    public function execute(PurchaseDto $purchaseDto): array
     {
-        $price = $this->priceService->getPrice($purchaseDto);
+        $productPrice = $this->priceService->getProductPrice($purchaseDto);
 
         //creating an order with status
         $order = new Order();
-        $order->setAmount($price);
+        $order->setAmount(floatval($productPrice->getAmount()));
         $order->setStatus(PaymentStatus::PENDING);
+        $order->setPaymentProcessor($purchaseDto->getPaymentProcessor());
 
         $this->orderRepository->save($order);   // можно отдельно вынести в OrderService - но в рамках данной задачи и ее описания это не целесообразно
 
         //start payment
-        $this->paymentProcessor->execute($price, $purchaseDto->getPaymentProcessor());
+        $this->paymentProcessor->execute($productPrice, $purchaseDto->getPaymentProcessor());
 
+
+        return [
+            'orderId' => $order->getId(),
+            'status' => $order->getStatus(),
+            'payment_processor' => $order->getPaymentProcessor(),
+        ];
     }
 }

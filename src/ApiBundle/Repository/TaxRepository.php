@@ -20,9 +20,9 @@ class TaxRepository  extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('t')
             ->where('t.countryCode = :countryCode')
-            ->setParameters(parameters: [
-                'countryCode' => $countryCode,
-            ])
+            ->setParameter(
+                'countryCode', $countryCode,
+            )
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
