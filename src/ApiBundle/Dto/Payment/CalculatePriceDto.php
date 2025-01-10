@@ -6,6 +6,8 @@ namespace App\ApiBundle\Dto\Payment;
 
 use App\ApiBundle\Dto\BaseDto;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\ApiBundle\Validator\Constraint as ApiBundleAssert;;
+
 class CalculatePriceDto extends BaseDto
 {
     #[Assert\NotBlank(message: "Product ID is required.")]
@@ -13,12 +15,9 @@ class CalculatePriceDto extends BaseDto
     protected int $product;
 
     #[Assert\NotBlank(message: "Tax number is required.")]
-    #[Assert\Regex(
-        pattern: "/^DE\d{9}$/",
-        message: "The tax number must start with 'DE' followed by 9 digits."
-    )]
+    #[ApiBundleAssert\TaxNumber]
     #[Assert\Type(type: "string", message: "Tax number must be a string.")]
-    protected string $taxNumber; // тут нужно делать отдельный валидатор для номера потому как регулярко не правильно валидировать. В следующем комите реализую
+    protected string $taxNumber;
 
     #[Assert\NotBlank(message: "Coupon code is required.")]
     #[Assert\Regex(

@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- *  Не создавалась промежуточная таблица order_product (в качестве общей корзины)
- *  поскольку в рамках задачи это не предполагалось по условиям и смыслу.
+ * The order_product intermediate table was not created (as a general cart)
+ * because within the framework of the task this was not assumed by the conditions and meaning.
  */
 class PaymentController extends BaseController
 {
