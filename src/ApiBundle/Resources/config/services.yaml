@@ -1,8 +1,4 @@
 services:
-  _defaults:
-    public: true
-    autoconfigure: true
-
  #components
   App\ApiBundle\Components\PaymentProcessor\PaymentProcessor:
     arguments:
@@ -12,39 +8,24 @@ services:
     arguments:
       $paymentProviders: !tagged_iterator { tag: 'payment_provider' }
 
+    # Stripe Provider
+  App\ApiBundle\Components\PaymentProcessor\Providers\Stripe:
+    arguments:
+      $paymentProcessor: '@Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor'
+    tags:
+       - { name: 'payment_provider', key: 'stripe' }
+
+    # PayPal Provider
   App\ApiBundle\Components\PaymentProcessor\Providers\Paypall:
+    arguments:
+      $paymentProcessor: '@Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor'
     tags:
       - { name: 'payment_provider', key: 'paypal' }
 
-  App\ApiBundle\Components\PaymentProcessor\Providers\Stripe:
-    tags:
-      - { name: 'payment_provider', key: 'stripe' }
+    # Register StripePaymentProcessor as a service
+  Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor:
+    class: Systemeio\TestForCandidates\PaymentProcessor\StripePaymentProcessor
 
-
-  #Controller
-  App\ApiBundle\Controller\PaymentController:
-    arguments:
-      $validator: '@App\ApiBundle\Validator\BaseValidator'
-      $priceService: '@App\ApiBundle\Service\Payment\PriceService'
-      $paymentService: '@App\ApiBundle\Service\Payment\PaymentService'
-
-  #Service
-    #Payment
-  App\ApiBundle\Service\Payment\PriceService:
-    public: true
-    autowire: true
-    arguments:
-      $couponRepository: '@App\ApiBundle\Repository\CouponRepository'
-      $productRepository: '@App\ApiBundle\Repository\ProductRepository'
-      $taxRepository: '@App\ApiBundle\Repository\TaxRepository'
-
-  App\ApiBundle\Service\Payment\PaymentService:
-    public: true
-    autowire: true
-    arguments:
-      $priceService: '@App\ApiBundle\Service\Payment\PriceService'
-      $paymentProcessor: '@App\ApiBundle\Components\PaymentProcessor\PaymentProcessor'
-      $orderRepository: '@App\ApiBundle\Repository\OrderRepository'
-
-
-  App\ApiBundle\Validator\BaseValidator: ~
+    # Register PaypalPaymentProcessor as a service
+  Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor:
+    class: Systemeio\TestForCandidates\PaymentProcessor\PaypalPaymentProcessor

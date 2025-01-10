@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ApiBundle\Validator;
 
 use App\ApiBundle\Dto\BaseDto;
+use App\ApiBundle\Exception\ValidationException;
 use Symfony\Component\Validator\Validator\ValidatorInterface as SymfonyValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 class BaseValidator
@@ -18,17 +19,19 @@ class BaseValidator
 
     /**
      * @param BaseDto $dto
-     * @return array|null
+     * @return void
      */
-    public function validate(BaseDto $dto): ?array
+    public function validate(BaseDto $dto): void
     {
         $violations = $this->validator->validate($dto);
 
         if (count($violations) > 0) {
-            return $this->formatViolations($violations);
+            $errors = $this->formatViolations($violations);
+
+            throw new ValidationException($errors);
         }
 
-        return null;
+        return;
     }
 
     /**

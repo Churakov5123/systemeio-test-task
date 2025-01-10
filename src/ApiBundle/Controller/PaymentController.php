@@ -7,6 +7,8 @@ namespace App\ApiBundle\Controller;
 
 use App\ApiBundle\Dto\Payment\CalculatePriceDto;
 use App\ApiBundle\Dto\Payment\PurchaseDto;
+use App\ApiBundle\Exception\BadRequestException;
+use App\ApiBundle\Exception\ValidationException;
 use App\ApiBundle\Service\Payment\PaymentService;
 use App\ApiBundle\Service\Payment\PriceService;
 use App\ApiBundle\Validator\BaseValidator;
@@ -34,23 +36,19 @@ class PaymentController extends BaseController
             $dto = new CalculatePriceDto();
             $dto->fillFromRequest($request);
 
-            $errors = $this->validator->validate($dto);
-
-            if ($errors !== null) {
-                return $this->sendJsonResponse(
-                    [
-                        'errors' => $errors,
-                    ],
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
+            $this->validator->validate($dto);
             $price = $this->priceService->getPrice($dto);
-        } catch (\Exception $e) {
 
+            return $this->sendJsonResponse(['price' => $price]);
+        } catch (BadRequestException $e) {
+            return $this->sendJsonResponse($e->getData(),
+                $e->getCode()
+            );
+        } catch (ValidationException $e) {
+            return $this->sendJsonResponse($e->getData(),
+                $e->getCode()
+            );
         }
-
-        return $this->sendJsonResponse(['price' => $price]);
     }
 
     public function purchase(Request $request): JsonResponse
@@ -59,20 +57,17 @@ class PaymentController extends BaseController
             $dto = new PurchaseDto();
             $dto->fillFromRequest($request);
 
-            $errors = $this->validator->validate($dto);
-
-            if ($errors !== null) {
-                return $this->sendJsonResponse(
-                    [
-                        'errors' => $errors,
-                    ],
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
+            $this->validator->validate($dto);
 
             $this->paymentService->execute($dto);
-        } catch (\Exception $e) {
-
+        } catch (BadRequestException $e) {
+            return $this->sendJsonResponse($e->getData(),
+                $e->getCode()
+            );
+        } catch (ValidationException $e) {
+            return $this->sendJsonResponse($e->getData(),
+                $e->getCode()
+            );
         }
 
         return $this->sendJsonResponse();

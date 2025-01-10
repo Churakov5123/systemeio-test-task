@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ApiBundle\Dto;
 
+use App\ApiBundle\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class BaseDto
@@ -30,7 +31,7 @@ abstract class BaseDto
         $data = json_decode($request->getContent(), true);
 
         if (!is_array($data)) {
-            throw new \Exception('Decode request problem');
+            throw new BadRequestException();
         }
 
         return $data;
