@@ -10,7 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class BaseDto
 {
     /**
-     * @throws \Exception
+     * @param Request $request
+     * @return void
+     *
+     * @throws BadRequestException
      */
     public function fillFromRequest(Request $request): void
     {
@@ -24,7 +27,8 @@ abstract class BaseDto
     /**
      * @param Request $request
      * @return array
-     * @throws \Exception
+     *
+     * @throws BadRequestException
      */
     private function getDataFromRequest(Request $request): array
     {

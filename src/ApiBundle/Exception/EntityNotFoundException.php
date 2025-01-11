@@ -5,7 +5,7 @@ namespace App\ApiBundle\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class EntityNotFoundException extends BaseException
+final class EntityNotFoundException extends BaseException
 {
     public function __construct(array $errors = [])
     {

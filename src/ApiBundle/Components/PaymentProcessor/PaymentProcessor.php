@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ApiBundle\Components\PaymentProcessor;
 
 use App\ApiBundle\Components\PaymentProcessor\Providers\Pay;
+use App\ApiBundle\Exception\EntityNotFoundException;
 use Money\Money;
 
 /**
@@ -18,6 +19,14 @@ class PaymentProcessor
     {
     }
 
+    /**
+     * @param Money $productPrice
+     * @param string $paymentProcessor
+     *
+     * @return void
+     *
+     * @throws EntityNotFoundException
+ */
     public function execute(Money $productPrice, string $paymentProcessor): void
     {
         /** @var Pay $provider */

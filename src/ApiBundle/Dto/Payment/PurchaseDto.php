@@ -9,6 +9,10 @@ class PurchaseDto extends CalculatePriceDto
 {
     #[Assert\NotBlank(message: "Payment processor is required.")]
     #[Assert\Type(type: "string", message: "Payment processor must be a string.")]
+    #[Assert\Choice(
+        choices: ["paypal", "stripe"],
+        message: "The payment processor must be either 'paypal' or 'stripe'."
+    )]
     protected string $paymentProcessor;
 
     public function getPaymentProcessor(): string

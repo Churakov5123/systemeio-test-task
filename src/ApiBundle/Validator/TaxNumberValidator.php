@@ -16,14 +16,12 @@ class TaxNumberValidator extends ConstraintValidator
             throw new \InvalidArgumentException(sprintf('Expected instance of %s', TaxNumber::class));
         }
 
-        // Проверяем на null или пустую строку и отдаем сообщение об ошибке
         if (null === $value || '' === $value) {
             $this->context->buildViolation('Tax number cannot be null or empty.')
                 ->addViolation();
             return;
         }
 
-        // Проверяем, что значение является строкой
         if (!is_string($value)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
@@ -31,15 +29,13 @@ class TaxNumberValidator extends ConstraintValidator
             return;
         }
 
-        // Регулярные выражения для стран
         $patterns = [
-            '/^DE[0-9]{9}$/' => 'Germany (DE123456789)',       // Германия
-            '/^IT[0-9]{11}$/' => 'Italy (ITXXXXXXXXXXX)',      // Италия
-            '/^GR[0-9]{9}$/' => 'Greece (GRXXXXXXXXX)',        // Греция
-            '/^FR[A-Z]{2}[0-9]{9}$/' => 'France (FRYYXXXXXXXXX)', // Франция
+            '/^DE[0-9]{9}$/' => 'Germany (DE123456789)',
+            '/^IT[0-9]{11}$/' => 'Italy (ITXXXXXXXXXXX)',
+            '/^GR[0-9]{9}$/' => 'Greece (GRXXXXXXXXX)',
+            '/^FR[A-Z]{2}[0-9]{9}$/' => 'France (FRYYXXXXXXXXX)',
         ];
 
-        // Проверяем, соответствует ли значение одному из форматов
         $isValid = false;
         foreach ($patterns as $pattern => $country) {
             if (preg_match($pattern, $value)) {

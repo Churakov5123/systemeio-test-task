@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace App\ApiBundle\Components\PaymentProcessor;
 
+use App\ApiBundle\Components\PaymentProcessor\Providers\Provider;
+use App\ApiBundle\Exception\EntityNotFoundException;
+
 /**
  * Simple factory for receiving an object by type of provider processor
  */
 class PaymentProviderRegistry
 {
+    /**
+     * @var Provider[]
+     */
     public array $paymentProviders;
 
     public function __construct(iterable $paymentProviders)
@@ -16,11 +22,27 @@ class PaymentProviderRegistry
         $this->paymentProviders = $paymentProviders instanceof \Traversable ? iterator_to_array($paymentProviders) : $paymentProviders;
     }
 
-    public function getProvider(string $key)
+    /**
+     * @param string $key
+     *
+     * @return Provider
+     *
+     * @throws EntityNotFoundException
+     */
+    public function getProvider(string $key): Provider
     {
-        return $this->paymentProviders[$key] ?? null;
+        $provider = $this->paymentProviders[$key] ?? null;
+
+        if (null === $provider) {
+            return throw new EntityNotFoundException();
+        }
+
+        return $provider;
     }
 
+    /**
+     * @return Provider[]
+     */
     public function getPaymentProviders(): array
     {
         return $this->paymentProviders;

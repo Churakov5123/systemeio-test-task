@@ -8,6 +8,7 @@ use App\ApiBundle\Components\PaymentProcessor\PaymentProcessor;
 use App\ApiBundle\Dto\Payment\PurchaseDto;
 use App\ApiBundle\Entity\Order;
 use App\ApiBundle\Enum\PaymentStatus;
+use App\ApiBundle\Exception\EntityNotFoundException;
 use App\ApiBundle\Repository\OrderRepository;
 
 /**
@@ -27,6 +28,8 @@ class PaymentService
      *
      * @param PurchaseDto $purchaseDto
      * @return array
+     *
+     * @throws EntityNotFoundException
      */
     public function execute(PurchaseDto $purchaseDto): array
     {
@@ -36,16 +39,18 @@ class PaymentService
         $order = new Order();
         $order->setAmount(floatval($productPrice->getAmount()));
         $order->setStatus(PaymentStatus::PENDING);
+        $order->setCurrency($productPrice->getCurrency()->getCode());
         $order->setPaymentProcessor($purchaseDto->getPaymentProcessor());
 
-        $this->orderRepository->save($order);   // можно отдельно вынести в OrderService - но в рамках данной задачи и ее описания это не целесообразно
+        $this->orderRepository->save($order);   // Сan be placed separately in OrderService - but within the framework of this task and its description this is not advisable
 
         //start payment
         $this->paymentProcessor->execute($productPrice, $purchaseDto->getPaymentProcessor());
 
-
         return [
             'orderId' => $order->getId(),
+            'amount' => $order->getAmount(),
+            'currency' => $order->getCurrency(),
             'status' => $order->getStatus(),
             'payment_processor' => $order->getPaymentProcessor(),
         ];

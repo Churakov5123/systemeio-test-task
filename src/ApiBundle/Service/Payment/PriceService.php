@@ -25,6 +25,13 @@ class PriceService
     {
     }
 
+    /**
+     * @param CalculatePriceDto $calculatePriceDto
+     *
+     * @return Money
+     *
+     * @throws EntityNotFoundException
+     */
     public function getProductPrice(CalculatePriceDto $calculatePriceDto): Money
     {
         /** @var Product $product */
@@ -41,23 +48,46 @@ class PriceService
         return $amount->add($taxAmount)->subtract($discount);
     }
 
-    //В этих методах можно использовать отдельные сервисы где будет реализована соответствующая логика (вынос логики в сервисы)
-    //В рамках проекта это было бы верно, но в рамках одного  тестового задания  углублятся смысла не вижу и опишу логику прям тут
+    // !! In these methods you can use separate services where the corresponding logic will be implemented (carrying out the logic into services)
+    //Within the framework of the project this would be true, but within the framework of one test task it doesn’t make sense to go deeper and I’ll describe the logic right here
+    /**
+     * @param Money $amount
+     * @param string $taxNumber
+     *
+     * @return Money
+     *
+     * @throws EntityNotFoundException
+     */
     private function getTaxAmount(Money $amount, string $taxNumber): Money
     {
         $countryCode = substr($taxNumber, 0, 2);
         /** @var Tax $tax */
         $tax = $this->taxRepository->getByCountryCode($countryCode);
 
+        if ($tax === null) {
+            throw new EntityNotFoundException();
+        }
+
         return $amount->multiply($tax->getPercent() / 100);
     }
 
-    //В этих методах можно использовать отдельные сервисы где будет реализована соответствующая логика (вынос логики в сервисы)
-    //В рамках проекта это было бы верно, но в рамках одного  тестового задания  углублятся смысла не вижу и опишу логику прям тут
+    // same case !
+    /**
+     * @param CalculatePriceDto $calculatePriceDto
+     * @param Money $amount
+     *
+     * @return Money
+     *
+     * @throws EntityNotFoundException
+     */
     private function getDiscountByType(CalculatePriceDto $calculatePriceDto, Money $amount): Money
     {
         /** @var  Coupon $coupon */
         $coupon = $this->couponRepository->findByCode($calculatePriceDto->getCouponCode());
+
+        if ($coupon === null) {
+            throw new EntityNotFoundException();
+        }
 
         return match ($coupon->getType()) {
             CouponType::PERCENT => $amount->multiply($coupon->getDiscountAmount() / 100),

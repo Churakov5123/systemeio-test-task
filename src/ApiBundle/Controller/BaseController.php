@@ -14,6 +14,7 @@ class BaseController extends AbstractController
      * @param int $status
      * @param array $headers
      * @param bool $isJson
+     *
      * @return JsonResponse
      */
     public function sendJsonResponse($data = null, $status = Response::HTTP_OK, $headers = [], $isJson = false): JsonResponse

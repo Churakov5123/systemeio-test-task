@@ -22,6 +22,9 @@ class Order
     #[ORM\Column(name: 'status', type: 'string')]
     private string $status;
 
+    #[ORM\Column(name: 'currency', type: 'string', length: 5)]
+    private string $currency;
+
     #[ORM\Column(name: 'payment_processor', type: 'string')]
     private string $paymentProcessor;
 
@@ -85,5 +88,15 @@ class Order
     public function setPaymentProcessor(string $paymentProcessor): void
     {
         $this->paymentProcessor = $paymentProcessor;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(string $currency): void
+    {
+        $this->currency = $currency;
     }
 }
