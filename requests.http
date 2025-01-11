@@ -12,7 +12,7 @@ Content-Type: application/json
 ###
 
 {
-	"price": "98",
+	"price": "23",
 	"currency": "EUR"
 }
 
@@ -31,7 +31,9 @@ Content-Type: application/json
 ###
 
 {
-	"orderId": 12,
+	"orderId": 74,
+	"amount": 23,
+	"currency": "EUR",
 	"status": "pending",
-	"payment_processor": "paypal"
+	"payment_processor": "stripe"
 }
