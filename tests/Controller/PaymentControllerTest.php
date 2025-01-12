@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\ApiBundle\Dto\Payment\PurchaseDto;
+use App\ApiBundle\Exception\ValidationException;
 use PHPUnit\Framework\TestCase;
-
 use App\ApiBundle\Controller\PaymentController;
 use App\ApiBundle\Dto\Payment\CalculatePriceDto;
 use App\ApiBundle\Exception\EntityNotFoundException;
@@ -92,7 +92,7 @@ class PaymentControllerTest extends TestCase
         $this->validator->expects($this->once())
             ->method('validate')
             ->with($this->isInstanceOf(CalculatePriceDto::class))
-            ->willThrowException(new \App\ApiBundle\Exception\ValidationException());
+            ->willThrowException(new ValidationException());
 
         // Вызываем метод контроллера
         $response = $this->controller->calculatePrice($request);
@@ -190,6 +190,62 @@ class PaymentControllerTest extends TestCase
             'currency' => "EUR",
             'status' => "pending",
             'payment_processor' => "stripe",
+        ]), $response->getContent());
+    }
+
+    public function testPurchaseEntityNotFound(): void
+    {
+        // Иметируем тестовый запрос c неполной сущностью
+        $request = new Request(content: json_encode([
+            'product' => 10000,
+            'taxNumber' => "DE123456789",
+            'couponCode' => 'D15',
+            'paymentProcessor' => 'stripe'
+        ]));
+
+        // Мокаем валидатор (проверка успешно проходит)
+        $this->validator->expects($this->once())
+            ->method('validate')
+            ->with($this->isInstanceOf(PurchaseDto::class))
+            ->willThrowException(new EntityNotFoundException());
+
+        // Вызываем метод контроллера
+        $response = $this->controller->purchase($request);
+
+        // Проверяем, что вернулся корректный ответ об ошибке
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString(json_encode([
+            'errors' => [],
+            'message' => "Entity not found.",
+            'code' => 404
+        ]), $response->getContent());
+    }
+
+    public function testPurchaseValidationError(): void
+    {
+        // Иметируем тестовый не полный запрос
+        $request = new Request(content: json_encode([
+            'product' => 1,
+        ]));
+
+
+        // Мокаем валидатор (проверка успешно проходит)
+        $this->validator->expects($this->once())
+            ->method('validate')
+            ->with($this->isInstanceOf(PurchaseDto::class))
+            ->willThrowException(new ValidationException());
+
+        // Вызываем метод контроллера
+        $response = $this->controller->purchase($request);
+
+        // Проверяем, что вернулся корректный ответ об ошибке
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(422, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString(json_encode([
+            'errors' => [],
+            'message' => "Validation failed",
+            'code' => 422
         ]), $response->getContent());
     }
 }

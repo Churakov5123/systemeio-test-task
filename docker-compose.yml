@@ -24,3 +24,14 @@ services:
             - ./docker/postgres/data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
+    db_mysql:
+        image: mysql:8.0
+        restart: always
+        env_file: .env
+        environment:
+            - MYSQL_DATABASE=my_database
+            - MYSQL_USER=mysql_user
+            - MYSQL_PASSWORD=mysql_pass
+            - MYSQL_ROOT_PASSWORD=mysql_pass
+        volumes:
+            - ./docker/mysql/data:/var/lib/mysql

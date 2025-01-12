@@ -12,6 +12,8 @@ compose.override.yaml
 /vendor/
 docker/postgres/data/*
 !docker/postgres/data/
+docker/mysql/data/*
+!docker/mysql/data/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
