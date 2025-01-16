@@ -21,12 +21,13 @@ services:
             POSTGRES_USER: my_pg_user
             POSTGRES_PASSWORD: pg_user
         volumes:
-            - ./docker/postgres/data:/var/lib/postgresql/data
+            - db_data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
     db_mysql:
         image: mysql:8.0
         restart: always
+        container_name: mysql
         env_file: .env
         environment:
             - MYSQL_DATABASE=my_database
@@ -34,4 +35,8 @@ services:
             - MYSQL_PASSWORD=mysql_pass
             - MYSQL_ROOT_PASSWORD=mysql_pass
         volumes:
-            - ./docker/mysql/data:/var/lib/mysql
+            - db_data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+volumes:
+    db_data:
