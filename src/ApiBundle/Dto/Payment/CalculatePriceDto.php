@@ -12,12 +12,12 @@ class CalculatePriceDto extends BaseDto
 {
     #[Assert\NotBlank(message: "Product ID is required.")]
     #[Assert\Type(type: "integer", message: "The product ID must be an integer.")]
-    protected int $product;
+    private int $product;
 
     #[Assert\NotBlank(message: "Tax number is required.")]
     #[ApiBundleAssert\TaxNumber]
     #[Assert\Type(type: "string", message: "Tax number must be a string.")]
-    protected string $taxNumber;
+    private string $taxNumber;
 
     #[Assert\NotBlank(message: "Coupon code is required.")]
     #[Assert\Regex(
@@ -25,7 +25,7 @@ class CalculatePriceDto extends BaseDto
         message: "The coupon code must be a letter followed by 2 digits (e.g., D15)."
     )]
     #[Assert\Type(type: "string", message: "Coupon code must be a string.")]
-    protected string $couponCode;
+    private string $couponCode;
 
     public function getProduct(): int
     {
